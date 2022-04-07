@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { v4 } from 'uuid';
 
-
-const Edit = ({ add, submittingStatus }) => {
+const Edit = ({ add }) => {
 
     const [note, setNote] = useState("")
     function noteChange(e){
@@ -22,18 +20,15 @@ const Edit = ({ add, submittingStatus }) => {
     console.log(note, date, time)
 
     function addItem() {
-        submittingStatus.current = true
         add(function(prevData){
-            return [
-               {
-                    id: v4(),
-                    note,
-                    date,
-                    time
-                },...prevData, //新增的值放最上面
-        ]})
+            return [...prevData, {
+                note,
+                date,
+                time
+            }]
+        })
     }
-
+    
     // 寫的操作都i是要跟狀態有關，狀態變動才能去拿到結果 每個input去綁定一個useState，急可空至他
 
     return <div>
@@ -44,7 +39,7 @@ const Edit = ({ add, submittingStatus }) => {
         <input type="date" value={date} onChange={dateChange}/>
         <p>時間：</p>
         <input type="time" value={time} onChange={timeChange}/>
-        <button onClick={addItem} className="add">新增</button>
+        <button onClick={addItem} className="add">新增</button> 
         {/* onClick事件發生，透過useState去渲染{addItem}畫面 */}
     </div>
 }
